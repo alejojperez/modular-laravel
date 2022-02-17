@@ -2,6 +2,10 @@
 // config for ModularLaravel/ModularLaravel
 return [
 
-    "modulesPath" => base_path("modules")
+    "sourcePath" => base_path("src"),
+
+    "domainFolderName" => "Domain",
+
+    "appFolderName" => "App",
 
 ];
