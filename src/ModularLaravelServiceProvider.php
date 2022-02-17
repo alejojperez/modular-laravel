@@ -2,9 +2,9 @@
 
 namespace ModularLaravel\ModularLaravel;
 
+use ModularLaravel\ModularLaravel\Commands\MakeModuleCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ModularLaravel\ModularLaravel\Commands\MakeModuleCommand;
 
 class ModularLaravelServiceProvider extends PackageServiceProvider
 {

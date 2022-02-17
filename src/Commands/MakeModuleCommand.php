@@ -59,7 +59,7 @@ class MakeModuleCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?")
+            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?"),
         ];
     }
 
@@ -71,8 +71,7 @@ class MakeModuleCommand extends Command
     {
         $value = $this->ask($question, "REQUIRED");
 
-        if($value === "REQUIRED")
-        {
+        if ($value === "REQUIRED") {
             $this->error("Value is required");
             exit(1);
         }
