@@ -4,17 +4,17 @@ namespace ModularLaravel\ModularLaravel\Commands;
 
 class MakeDomainCommand extends AbstractMakeModuleCommand
 {
-    function getCommandName(): string
+    public function getCommandName(): string
     {
         return "domain";
     }
 
-    function getModuleType(): string
+    public function getModuleType(): string
     {
         return config("modular-laravel.domainFolderName");
     }
 
-    function getFolders(): array
+    public function getFolders(): array
     {
         return [
             "Actions",

@@ -4,24 +4,24 @@ namespace ModularLaravel\ModularLaravel\Commands;
 
 class MakeAppCommand extends AbstractMakeModuleCommand
 {
-    function getCommandName(): string
+    public function getCommandName(): string
     {
         return "app";
     }
 
-    function getModuleType(): string
+    public function getModuleType(): string
     {
         return config("modular-laravel.appFolderName");
     }
 
-    function getFolders(): array
+    public function getFolders(): array
     {
         return [
             "Controllers",
             "Middlewares",
             "Requests",
             "Resources",
-            "ViewModels"
+            "ViewModels",
         ];
     }
 }
