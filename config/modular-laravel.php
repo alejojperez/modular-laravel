@@ -2,7 +2,7 @@
 // config for ModularLaravel/ModularLaravel
 return [
 
-    "sourcePath" => base_path("src"),
+    "sourceFolderName" => "src",
 
     "domainFolderName" => "Domain",
 

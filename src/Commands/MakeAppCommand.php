@@ -2,26 +2,29 @@
 
 namespace ModularLaravel\ModularLaravel\Commands;
 
+use Illuminate\Support\Stringable;
+use ModularLaravel\ModularLaravel\Helpers\Names;
+
 class MakeAppCommand extends AbstractMakeModuleCommand
 {
-    public function getCommandName(): string
+    function getCommandName(): string
     {
         return "app";
     }
 
-    public function getModuleType(): string
+    function getModuleType(): Stringable
     {
-        return config("modular-laravel.appFolderName");
+        return Names::app();
     }
 
-    public function getFolders(): array
+    function getFolders(): array
     {
         return [
             "Controllers",
             "Middlewares",
             "Requests",
             "Resources",
-            "ViewModels",
+            "ViewModels"
         ];
     }
 }

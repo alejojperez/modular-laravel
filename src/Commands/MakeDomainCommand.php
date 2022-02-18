@@ -2,19 +2,22 @@
 
 namespace ModularLaravel\ModularLaravel\Commands;
 
+use Illuminate\Support\Stringable;
+use ModularLaravel\ModularLaravel\Helpers\Names;
+
 class MakeDomainCommand extends AbstractMakeModuleCommand
 {
-    public function getCommandName(): string
+    function getCommandName(): string
     {
         return "domain";
     }
 
-    public function getModuleType(): string
+    function getModuleType(): Stringable
     {
-        return config("modular-laravel.domainFolderName");
+        return Names::domain();
     }
 
-    public function getFolders(): array
+    function getFolders(): array
     {
         return [
             "Actions",

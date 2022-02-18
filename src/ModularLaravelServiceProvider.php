@@ -2,7 +2,9 @@
 
 namespace ModularLaravel\ModularLaravel;
 
-use ModularLaravel\ModularLaravel\Commands\MakeModuleCommand;
+use ModularLaravel\ModularLaravel\Commands\InstallCommand;
+use ModularLaravel\ModularLaravel\Commands\MakeAppCommand;
+use ModularLaravel\ModularLaravel\Commands\MakeDomainCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -18,6 +20,8 @@ class ModularLaravelServiceProvider extends PackageServiceProvider
         $package
             ->name('modular-laravel')
             ->hasConfigFile()
-            ->hasCommand(MakeModuleCommand::class);
+            ->hasCommand(InstallCommand::class)
+            ->hasCommand(MakeAppCommand::class)
+            ->hasCommand(MakeDomainCommand::class);
     }
 }

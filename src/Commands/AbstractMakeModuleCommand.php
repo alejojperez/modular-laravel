@@ -4,10 +4,11 @@ namespace ModularLaravel\ModularLaravel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Stringable;
 
 abstract class AbstractMakeModuleCommand extends Command
 {
-    public const REPLACE = "COMMAND_NAME";
+    const REPLACE = "COMMAND_NAME";
 
     public function __construct()
     {
@@ -17,30 +18,36 @@ abstract class AbstractMakeModuleCommand extends Command
         parent::__construct();
     }
 
-    public $signature = 'modular-laravel:make:'.self::REPLACE.' {name?}';
+    public $signature = 'modular-laravel:make:'.self::REPLACE.' {name?} {--empty}';
 
     public $description = 'Create a new '.self::REPLACE.' scalfolding';
 
-    abstract public function getCommandName(): string;
+    abstract function getCommandName(): string;
 
-    abstract public function getModuleType(): string;
+    abstract function getModuleType(): Stringable;
 
-    abstract public function getFolders(): array;
+    abstract function getFolders(): array;
 
     public function handle(): int
     {
-        $sourcePath = config("modular-laravel.sourcePath");
-        $moduleType = str($this->getModuleType())->camel()->ucfirst();
+        $sourcePath = config("modular-laravel.sourceFolderName");
+        $moduleType = $this->getModuleType();
 
         $slash = DIRECTORY_SEPARATOR;
         $fileSystem = Storage::build($sourcePath.$slash.$moduleType);
-        $data = $this->data();
 
+        $data = $this->data();
         $name = str($data["name"])->camel()->ucfirst();
 
-        foreach ($this->getFolders() as $folder) {
-            $path = $name.$slash.str_replace(".", $slash, $folder);
-            $fileSystem->makeDirectory($path);
+        $fileSystem->makeDirectory($name);
+
+        if(!!!$this->option("empty"))
+        {
+            foreach ($this->getFolders() as $folder)
+            {
+                $path = $name.$slash.str_replace(".", $slash, $folder);
+                $fileSystem->makeDirectory($path);
+            }
         }
 
         $this->comment($moduleType." created successfully.");
@@ -54,7 +61,7 @@ abstract class AbstractMakeModuleCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?"),
+            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?")
         ];
     }
 
@@ -66,7 +73,8 @@ abstract class AbstractMakeModuleCommand extends Command
     {
         $value = $this->ask($question, "REQUIRED");
 
-        if ($value === "REQUIRED") {
+        if($value === "REQUIRED")
+        {
             $this->error("Value is required");
             exit(1);
         }
