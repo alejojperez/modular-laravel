@@ -8,7 +8,7 @@ use ModularLaravel\Helpers\Names;
 
 class ModifyAppInTheBootstrapFile implements ReversableAction
 {
-    const BAK_FILENAME = "bootstrap".DIRECTORY_SEPARATOR."app.php.bak";
+    public const BAK_FILENAME = "bootstrap".DIRECTORY_SEPARATOR."app.php.bak";
 
     private Filesystem $fileSystem;
 
@@ -32,8 +32,12 @@ class ModifyAppInTheBootstrapFile implements ReversableAction
         $this->fileSystem->copy("bootstrap".$slash."app.php", "bootstrap".$slash."app.php.bak");
         $content = $this->fileSystem->get("bootstrap".$slash."app.php");
 
-        if(!!!($appContent = file_get_contents(__DIR__.$slash."..".$slash."stubs".$slash."Application.stub"))) return false;
-        if(!!!$this->fileSystem->put($this->newAppPath.$slash."Application.php", $appContent)) return false;
+        if (! ! ! ($appContent = file_get_contents(__DIR__.$slash."..".$slash."stubs".$slash."Application.stub"))) {
+            return false;
+        }
+        if (! ! ! $this->fileSystem->put($this->newAppPath.$slash."Application.php", $appContent)) {
+            return false;
+        }
 
         $content = preg_replace("/Illuminate\\\\Foundation\\\\Application/", Names::app()."\\Application", $content);
 

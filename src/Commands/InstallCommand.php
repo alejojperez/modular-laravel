@@ -59,7 +59,7 @@ class InstallCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("appName") ?? "Default"
+            "name" => $this->argument("appName") ?? "Default",
         ];
     }
 
@@ -72,50 +72,44 @@ class InstallCommand extends Command
         $error = false;
         $currentAction = 0;
 
-        for (/**/; $currentAction < count($actions); $currentAction++)
-        {
+        for (/**/; $currentAction < count($actions); $currentAction++) {
             $this->comment($actions[$currentAction]->message());
 
-            if(!!!$actions[$currentAction]->execute())
-            {
+            if (! ! ! $actions[$currentAction]->execute()) {
                 $error = class_basename($actions[$currentAction]);
+
                 break;
             }
         }
 
-        if($error)
-        {
+        if ($error) {
             $rollbackErrors = [];
 
-            for (/**/; $currentAction >= 0; $currentAction--)
-            {
-                if(!!!$actions[$currentAction]->rollback())
-                {
+            for (/**/; $currentAction >= 0; $currentAction--) {
+                if (! ! ! $actions[$currentAction]->rollback()) {
                     $rollbackErrors[] = class_basename($actions[$currentAction]);
                 }
             }
 
             $this->error("Error when trying to perform the installation: $error");
 
-            if(count($rollbackErrors))
+            if (count($rollbackErrors)) {
                 $this->error("We could not rollback the following actions: ".implode(",", $rollbackErrors));
+            }
 
             return false;
-        }
-        else
-        {
+        } else {
             $finishErrors = [];
 
-            for ($currentAction = 0; $currentAction < count($actions); $currentAction++)
-            {
-                if(!!!$actions[$currentAction]->finish())
-                {
+            for ($currentAction = 0; $currentAction < count($actions); $currentAction++) {
+                if (! ! ! $actions[$currentAction]->finish()) {
                     $finishErrors[] = get_class($actions[$currentAction]);
                 }
             }
 
-            if(count($finishErrors))
+            if (count($finishErrors)) {
                 $this->error("We could not finish the following actions: ".implode(",", $finishErrors));
+            }
         }
 
         return true;

@@ -7,7 +7,7 @@ use ModularLaravel\Helpers\Names;
 
 class ModifyComposerAutoloadPSR4 implements ReversableAction
 {
-    const BAK_FILENAME = "composer.json.bak";
+    public const BAK_FILENAME = "composer.json.bak";
     private \Illuminate\Contracts\Filesystem\Filesystem $fileSystem;
 
     public function __construct()

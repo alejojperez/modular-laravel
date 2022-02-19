@@ -18,8 +18,7 @@ class ModifyTheNamespaceOfAllClassesOnTheDatabaseFolder implements ReversableAct
     {
         $this->fileSystem->copyDirectory("database", "database.bak");
 
-        foreach ($this->fileSystem->allFiles("database") as $file)
-        {
+        foreach ($this->fileSystem->allFiles("database") as $file) {
             $count = 0;
 
             $success = $this->fileSystem->put(
@@ -32,15 +31,13 @@ class ModifyTheNamespaceOfAllClassesOnTheDatabaseFolder implements ReversableAct
                 )
             );
 
-            if(!!!$success)
-            {
+            if (! ! ! $success) {
                 $this->rollback();
 
                 return false;
             }
 
-            if($count)
-            {
+            if ($count) {
                 $this->command->comment("    $file");
             }
         }
