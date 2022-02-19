@@ -1,5 +1,5 @@
 <?php
 
-use ModularLaravel\ModularLaravel\Tests\TestCase;
+use ModularLaravel\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

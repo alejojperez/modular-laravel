@@ -1,9 +1,9 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel\Commands;
+namespace ModularLaravel\Commands;
 
 use Illuminate\Support\Stringable;
-use ModularLaravel\ModularLaravel\Helpers\Names;
+use ModularLaravel\Helpers\Names;
 
 class MakeDomainCommand extends AbstractMakeModuleCommand
 {

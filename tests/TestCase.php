@@ -1,9 +1,9 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel\Tests;
+namespace ModularLaravel\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use ModularLaravel\ModularLaravel\ModularLaravelServiceProvider;
+use ModularLaravel\ModularLaravelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

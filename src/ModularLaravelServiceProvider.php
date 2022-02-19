@@ -1,10 +1,10 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel;
+namespace ModularLaravel;
 
-use ModularLaravel\ModularLaravel\Commands\InstallCommand;
-use ModularLaravel\ModularLaravel\Commands\MakeAppCommand;
-use ModularLaravel\ModularLaravel\Commands\MakeDomainCommand;
+use ModularLaravel\Commands\InstallCommand;
+use ModularLaravel\Commands\MakeAppCommand;
+use ModularLaravel\Commands\MakeDomainCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

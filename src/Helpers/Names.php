@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel\Helpers;
+namespace ModularLaravel\Helpers;
 
 use Illuminate\Support\Stringable;
 

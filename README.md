@@ -13,7 +13,7 @@ If you would like to clone this repo and make changes yourself, you can use dock
 ```bash
 docker build --tag="alejojperez/modular-laravel" ./docker
 docker run -v `pwd`:/usr/src/app --name=modular-laravel -dit alejojperez/modular-laravel
-docker exec -it modular-laravel bash
+docker exec -it modular-laravel /bin/sh
 
 # Whithin the container
 composer install -n

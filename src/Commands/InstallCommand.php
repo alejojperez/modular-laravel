@@ -1,76 +1,123 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel\Commands;
+namespace ModularLaravel\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use ModularLaravel\ModularLaravel\Helpers\Names;
+use ModularLaravel\Actions\EditRoutesOnAnyFileWithinTheLaravelFolders;
+use ModularLaravel\Actions\ModifyAppInTheBootstrapFile;
+use ModularLaravel\Actions\ModifyComposerAutoloadPSR4;
+use ModularLaravel\Actions\ModifyTheNamespaceOfAllClassesOnTheLaravelFolders;
+use ModularLaravel\Actions\MoveFoldersAndFilesToTheNewAppFolder;
+use ModularLaravel\Actions\ReversableAction;
 
 class InstallCommand extends Command
 {
-    public $signature = 'modular-laravel:install';
+    public $signature = 'modular-laravel:install {appName?}';
 
-    public $description = 'Make the necessary cahnges to the project for it to work.';
+    public $description = 'Make the necessary changes to the project for it to work with the new organization.';
 
     public function handle(): int
     {
 //        if(!!!$this->confirm("Have you made a copy of the porject current stage before continuing (if somehting goes worng we can't revert it)?")) return self::SUCCESS;
 //
-//        $this->crateTheDefaultAppScalfolding();
+        $actions = [
+            new ModifyComposerAutoloadPSR4(),
+            new ModifyTheNamespaceOfAllClassesOnTheLaravelFolders($this, $this->data()["name"]),
+            new EditRoutesOnAnyFileWithinTheLaravelFolders($this, $this->data()["name"]),
 
-        $this->modifyComposerAutoloadPSR4();
+            // IMPORTANT: The action ModifyAppInTheBootstrapFile must run after the action
+            // IMPORTANT: ModifyTheNamespaceOfAllClassesOnTheLaravelFolders becasue it
+            // IMPORTANT: will change the application namesapce
+            new ModifyAppInTheBootstrapFile($this->data()["name"]),
 
-        // edit the bootstrap app.php
-        // edit the config/app.php providers namespace
-        // move all the app folder to the new default app
-        // rename all that is within app, config, etc.. is replace by App\ --> App\Default\
-        // move database to folder to default, remove psr-4 from composer, and rename all the folder to be capital
-        // move lang to the correct place
-        // move resources to the correct place and make sure to edit webpack config
-        // move routes to the correct place and edit the route service provider
-        // check all the other files on the root to make sure that they are correct
+            // IMPORTANT: The last action must be when we move everything into the new folder
+            // IMPORTANT: because all the other actions assume that the files are in the
+            // IMPORTANT: default app folder that comes with Laravel
+            new MoveFoldersAndFilesToTheNewAppFolder($this->data()["name"]),
+        ];
+
+        $this->runActions($actions);
+
+        // change the app.php to override all the paths that we consider that need to be overwritten
+        // database: all subfolders in capital, migration|seeder commands from laravel to work
+        // edit phpunit.xml to refactor path to tests files
+        // edit webpack.mix.js to refactor path to resources files
+
         // update docs:
         //// save before do install
         //// setup config for app and domain
         //// not recommended for existing apps
 
-        $this->callComposerDumpAutoload();
+        shell_exec("composer dump-autoload");
 
         return self::SUCCESS;
     }
 
     /**
-     * @return void
+     * @return string[]
      */
-    protected function callComposerDumpAutoload(): void
+    protected function data(): array
     {
-        shell_exec("composer dump-autoload");
+        return [
+            "name" => $this->argument("appName") ?? "Default"
+        ];
     }
 
     /**
-     * @return void
+     * @param ReversableAction[] $actions
+     * @return bool
      */
-    protected function crateTheDefaultAppScalfolding(): void
+    protected function runActions(array $actions): bool
     {
-        $this->comment("Creating the default app...");
-        if (self::SUCCESS !== Artisan::call("modular-laravel:make:app Default --empty"))
-            throw new \RuntimeException("We could not create the default app to place all the default file that Laravel brings.");
-    }
+        $error = false;
+        $currentAction = 0;
 
-    protected function modifyComposerAutoloadPSR4(): void
-    {
-        $this->comment("Modifying the composer autoload PSR-4 section...");
-        $content = json_decode(file_get_contents(base_path("composer.json")), true);
+        for (/**/; $currentAction < count($actions); $currentAction++)
+        {
+            $this->comment($actions[$currentAction]->message());
 
-        $srcName = config("modular-laravel.sourceFolderName");
-        $appName = Names::app();
-        $domainName = Names::domain();
-        $slash = DIRECTORY_SEPARATOR;
+            if(!!!$actions[$currentAction]->execute())
+            {
+                $error = class_basename($actions[$currentAction]);
+                break;
+            }
+        }
 
-        $content["autoload"]["psr-4"] = [
-            "$appName\\\\" => ".".$slash.$srcName.$slash.$appName.$slash,
-            "$domainName\\\\" => ".".$slash.$srcName.$slash.$domainName.$slash,
-        ];
-        dd($content);
+        if($error)
+        {
+            $rollbackErrors = [];
+
+            for (/**/; $currentAction >= 0; $currentAction--)
+            {
+                if(!!!$actions[$currentAction]->rollback())
+                {
+                    $rollbackErrors[] = class_basename($actions[$currentAction]);
+                }
+            }
+
+            $this->error("Error when trying to perform the installation: $error");
+
+            if(count($rollbackErrors))
+                $this->error("We could not rollback the following actions: ".implode(",", $rollbackErrors));
+
+            return false;
+        }
+        else
+        {
+            $finishErrors = [];
+
+            for ($currentAction = 0; $currentAction < count($actions); $currentAction++)
+            {
+                if(!!!$actions[$currentAction]->finish())
+                {
+                    $finishErrors[] = get_class($actions[$currentAction]);
+                }
+            }
+
+            if(count($finishErrors))
+                $this->error("We could not finish the following actions: ".implode(",", $finishErrors));
+        }
+
+        return true;
     }
 }

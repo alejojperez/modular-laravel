@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularLaravel\ModularLaravel\Commands;
+namespace ModularLaravel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -76,7 +76,7 @@ abstract class AbstractMakeModuleCommand extends Command
         if($value === "REQUIRED")
         {
             $this->error("Value is required");
-            exit(1);
+            exit(self::FAILURE);
         }
 
         return $value;
