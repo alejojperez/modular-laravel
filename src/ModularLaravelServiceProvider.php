@@ -4,7 +4,6 @@ namespace ModularLaravel;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use ModularLaravel\Commands\InstallCommand;
 use ModularLaravel\Commands\MakeAppCommand;
 use ModularLaravel\Commands\MakeDomainCommand;

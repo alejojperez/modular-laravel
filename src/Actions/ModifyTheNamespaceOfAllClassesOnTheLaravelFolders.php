@@ -23,11 +23,10 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
 
             foreach (
                 collect($this->fileSystem->allFiles($folder))
-                    ->filter(fn($f) => str_contains($f, ".php") && !!!str_contains($f, "cache"))
+                    ->filter(fn ($f) => str_contains($f, ".php") && ! ! ! str_contains($f, "cache"))
                 as
                 $file
-            )
-            {
+            ) {
                 $count = 0;
 
                 $success = $this->fileSystem->put(
@@ -35,7 +34,9 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
                     str_replace(
                         ["App\\",              "namespace Database\\",                   "use Database\\"],
                         ["App\\$this->name\\", "namespace App\\$this->name\\Database\\", "use App\\$this->name\\Database\\"],
-                        $this->fileSystem->get($file), $count)
+                        $this->fileSystem->get($file),
+                        $count
+                    )
                 );
 
                 if (! ! ! $success) {

@@ -32,9 +32,15 @@ class ModifyAppInTheBootstrapFile implements ReversableAction
         $this->fileSystem->copy("bootstrap".$slash."app.php", "bootstrap".$slash."app.php.bak");
         $content = $this->fileSystem->get("bootstrap".$slash."app.php");
 
-        if(!!!($appContent = file_get_contents(__DIR__.$slash."..".$slash."stubs".$slash."Application.stub"))) return false;
-        if(!!!$appContent = str_replace("__APP_NAMESPACE__", Names::app()."\\\\$this->name\\\\", $appContent)) return false;
-        if(!!!$this->fileSystem->put($this->newAppPath.$slash."Application.php", $appContent)) return false;
+        if (! ! ! ($appContent = file_get_contents(__DIR__.$slash."..".$slash."stubs".$slash."Application.stub"))) {
+            return false;
+        }
+        if (! ! ! $appContent = str_replace("__APP_NAMESPACE__", Names::app()."\\\\$this->name\\\\", $appContent)) {
+            return false;
+        }
+        if (! ! ! $this->fileSystem->put($this->newAppPath.$slash."Application.php", $appContent)) {
+            return false;
+        }
 
         $content = preg_replace("/Illuminate\\\\Foundation\\\\Application/", Names::app()."\\Application", $content);
 

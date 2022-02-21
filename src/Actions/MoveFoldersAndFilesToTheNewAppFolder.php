@@ -42,13 +42,13 @@ class MoveFoldersAndFilesToTheNewAppFolder implements ReversableAction
                 return false;
             }
 
-            if($folder === "database")
-            {
+            if ($folder === "database") {
                 $slash = DIRECTORY_SEPARATOR;
 
-                foreach ($this->fileSystem->directories($target) as $directory)
-                {
-                    if (str_contains($directory, "migrations")) continue;
+                foreach ($this->fileSystem->directories($target) as $directory) {
+                    if (str_contains($directory, "migrations")) {
+                        continue;
+                    }
 
                     $pathParts = explode($slash, $directory);
                     $newDirectory = Names::name(array_pop($pathParts));

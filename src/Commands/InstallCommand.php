@@ -18,7 +18,9 @@ class InstallCommand extends Command
 
     public function handle(): int
     {
-        if(!!!$this->confirm("Have you made a copy of the porject current stage before continuing (if somehting goes worng we might not be able to revert it)?")) return self::SUCCESS;
+        if (! ! ! $this->confirm("Have you made a copy of the porject current stage before continuing (if somehting goes worng we might not be able to revert it)?")) {
+            return self::SUCCESS;
+        }
 
         $actions = [
             new ModifyComposerAutoloadPSR4(),
