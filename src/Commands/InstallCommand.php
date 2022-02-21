@@ -80,8 +80,7 @@ class InstallCommand extends Command
         for (/**/; $currentAction < count($actions); $currentAction++) {
             $this->comment($actions[$currentAction]->message());
 
-            if($actions[$currentAction]->shouldFinishBefore())
-            {
+            if ($actions[$currentAction]->shouldFinishBefore()) {
                 $this->finishActions(array_slice($actions, $finishIndex, $currentAction));
                 $finishIndex = $currentAction;
             }
