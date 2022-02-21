@@ -84,4 +84,9 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
 
         return ! ! ! $errors;
     }
+
+    public function shouldFinishBefore(): bool
+    {
+        return false;
+    }
 }

@@ -11,4 +11,6 @@ interface ReversableAction
     public function message(): string;
 
     public function rollback(): bool;
+
+    public function shouldFinishBefore(): bool;
 }

@@ -82,4 +82,9 @@ class MoveFoldersAndFilesToTheNewAppFolder implements ReversableAction
     {
         return $this->fileSystem->delete($this->newAppPath);
     }
+
+    public function shouldFinishBefore(): bool
+    {
+        return true;
+    }
 }

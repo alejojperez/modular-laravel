@@ -78,4 +78,9 @@ class ModifyAppInTheBootstrapFile implements ReversableAction
             &&
             $this->fileSystem->delete($this->newAppPath.DIRECTORY_SEPARATOR."Application.php");
     }
+
+    public function shouldFinishBefore(): bool
+    {
+        return false;
+    }
 }

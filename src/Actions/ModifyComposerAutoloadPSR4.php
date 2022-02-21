@@ -53,4 +53,9 @@ class ModifyComposerAutoloadPSR4 implements ReversableAction
             &&
             $this->fileSystem->delete(self::BAK_FILENAME);
     }
+
+    public function shouldFinishBefore(): bool
+    {
+        return false;
+    }
 }

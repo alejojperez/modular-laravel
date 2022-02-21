@@ -41,7 +41,6 @@ class InstallCommand extends Command
         $this->runActions($actions);
 
         // TODO
-        // providers and console kernel bak files not geeting deleted
         // test all the default artisan commands to work
         // edit phpunit.xml to refactor path to tests files
         // edit webpack.mix.js to refactor path to resources files
@@ -52,6 +51,7 @@ class InstallCommand extends Command
         //// not recommended for existing apps
         //// explain that they need to register the DatabaseSeeder to the laravel container for the seeders to work: \ModularLaravel\ModularLaravelServiceProvider::postInstallWiring($this->app);
 
+        $this->comment("Running [composer dump-autoload] commnad...");
         shell_exec("composer dump-autoload");
 
         return self::SUCCESS;
@@ -75,9 +75,16 @@ class InstallCommand extends Command
     {
         $error = false;
         $currentAction = 0;
+        $finishIndex = 0;
 
         for (/**/; $currentAction < count($actions); $currentAction++) {
             $this->comment($actions[$currentAction]->message());
+
+            if($actions[$currentAction]->shouldFinishBefore())
+            {
+                $this->finishActions(array_slice($actions, $finishIndex, $currentAction));
+                $finishIndex = $currentAction;
+            }
 
             if (! ! ! $actions[$currentAction]->execute()) {
                 $error = class_basename($actions[$currentAction]);
@@ -103,17 +110,26 @@ class InstallCommand extends Command
 
             return false;
         } else {
-            $finishErrors = [];
+            $this->finishActions(array_slice($actions, $finishIndex));
+        }
 
-            for ($currentAction = 0; $currentAction < count($actions); $currentAction++) {
-                if (! ! ! $actions[$currentAction]->finish()) {
-                    $finishErrors[] = get_class($actions[$currentAction]);
-                }
-            }
+        return true;
+    }
 
-            if (count($finishErrors)) {
-                $this->error("We could not finish the following actions: ".implode(",", $finishErrors));
+    protected function finishActions(array $actions): bool
+    {
+        $finishErrors = [];
+
+        for ($currentAction = 0; $currentAction < count($actions); $currentAction++) {
+            if (! ! ! $actions[$currentAction]->finish()) {
+                $finishErrors[] = get_class($actions[$currentAction]);
             }
+        }
+
+        if (count($finishErrors)) {
+            $this->error("We could not finish the following actions: ".implode(", ", $finishErrors));
+
+            return false;
         }
 
         return true;

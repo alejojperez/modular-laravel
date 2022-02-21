@@ -81,4 +81,9 @@ class EditRoutesOnAnyFileWithinTheLaravelFolders implements ReversableAction
 
         return ! ! ! $errors;
     }
+
+    public function shouldFinishBefore(): bool
+    {
+        return false;
+    }
 }
