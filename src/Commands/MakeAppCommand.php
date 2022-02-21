@@ -7,24 +7,24 @@ use ModularLaravel\Helpers\Names;
 
 class MakeAppCommand extends AbstractMakeModuleCommand
 {
-    function getCommandName(): string
+    public function getCommandName(): string
     {
         return "app";
     }
 
-    function getModuleType(): Stringable
+    public function getModuleType(): Stringable
     {
         return Names::app();
     }
 
-    function getFolders(): array
+    public function getFolders(): array
     {
         return [
             "Controllers",
             "Middlewares",
             "Requests",
             "Resources",
-            "ViewModels"
+            "ViewModels",
         ];
     }
 }

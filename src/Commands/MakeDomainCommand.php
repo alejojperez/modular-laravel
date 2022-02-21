@@ -7,17 +7,17 @@ use ModularLaravel\Helpers\Names;
 
 class MakeDomainCommand extends AbstractMakeModuleCommand
 {
-    function getCommandName(): string
+    public function getCommandName(): string
     {
         return "domain";
     }
 
-    function getModuleType(): Stringable
+    public function getModuleType(): Stringable
     {
         return Names::domain();
     }
 
-    function getFolders(): array
+    public function getFolders(): array
     {
         return [
             "Actions",

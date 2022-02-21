@@ -8,7 +8,7 @@ use Illuminate\Support\Stringable;
 
 abstract class AbstractMakeModuleCommand extends Command
 {
-    const REPLACE = "COMMAND_NAME";
+    public const REPLACE = "COMMAND_NAME";
 
     public function __construct()
     {
@@ -22,11 +22,11 @@ abstract class AbstractMakeModuleCommand extends Command
 
     public $description = 'Create a new '.self::REPLACE.' scalfolding';
 
-    abstract function getCommandName(): string;
+    abstract public function getCommandName(): string;
 
-    abstract function getModuleType(): Stringable;
+    abstract public function getModuleType(): Stringable;
 
-    abstract function getFolders(): array;
+    abstract public function getFolders(): array;
 
     public function handle(): int
     {
@@ -41,10 +41,8 @@ abstract class AbstractMakeModuleCommand extends Command
 
         $fileSystem->makeDirectory($name);
 
-        if(!!!$this->option("empty"))
-        {
-            foreach ($this->getFolders() as $folder)
-            {
+        if (! ! ! $this->option("empty")) {
+            foreach ($this->getFolders() as $folder) {
                 $path = $name.$slash.str_replace(".", $slash, $folder);
                 $fileSystem->makeDirectory($path);
             }
@@ -61,7 +59,7 @@ abstract class AbstractMakeModuleCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?")
+            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?"),
         ];
     }
 
@@ -73,8 +71,7 @@ abstract class AbstractMakeModuleCommand extends Command
     {
         $value = $this->ask($question, "REQUIRED");
 
-        if($value === "REQUIRED")
-        {
+        if ($value === "REQUIRED") {
             $this->error("Value is required");
             exit(self::FAILURE);
         }

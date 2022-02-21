@@ -29,40 +29,39 @@ class EditRoutesOnAnyFileWithinTheLaravelFolders implements ReversableAction
     {
         $errors = false;
 
-        foreach ($this->files as $key => $file)
-        {
+        foreach ($this->files as $key => $file) {
             $content = $this->fileSystem->get($file);
 
             $regex = '/base_path\([\'|"]routes\/(.+).php[\'|"]\)/';
             $replace = "base_path('$this->newAppPath".DIRECTORY_SEPARATOR."routes/$1.php')";
 
-            if(preg_match($regex, $content))
-            {
+            if (preg_match($regex, $content)) {
                 $this->fileSystem->copy($file, "$file.bak");
                 $this->command->comment("    $file");
                 $content = preg_replace($regex, $replace, $content);
 
-                if(!!!$this->fileSystem->put($file, $content))
+                if (! ! ! $this->fileSystem->put($file, $content)) {
                     $errors = true;
-            }
-            else
+                }
+            } else {
                 unset($this->files[$key]);
+            }
         }
 
-        return !!!$errors;
+        return ! ! ! $errors;
     }
 
     public function finish(): bool
     {
         $errors = false;
 
-        foreach ($this->files as $file)
-        {
-            if(!!!$this->fileSystem->delete("$file.bak"))
+        foreach ($this->files as $file) {
+            if (! ! ! $this->fileSystem->delete("$file.bak")) {
                 $errors = true;
+            }
         }
 
-        return !!!$errors;
+        return ! ! ! $errors;
     }
 
     public function message(): string
@@ -74,12 +73,12 @@ class EditRoutesOnAnyFileWithinTheLaravelFolders implements ReversableAction
     {
         $errors = false;
 
-        foreach ($this->files as $file)
-        {
-            if(!!!$this->fileSystem->move("$file.bak", $file))
+        foreach ($this->files as $file) {
+            if (! ! ! $this->fileSystem->move("$file.bak", $file)) {
                 $errors = true;
+            }
         }
 
-        return !!!$errors;
+        return ! ! ! $errors;
     }
 }

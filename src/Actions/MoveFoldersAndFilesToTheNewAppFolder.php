@@ -24,22 +24,23 @@ class MoveFoldersAndFilesToTheNewAppFolder implements ReversableAction
 
     public function execute(): bool
     {
-        foreach ($this->folders as $folder)
-        {
-            switch ($folder)
-            {
+        foreach ($this->folders as $folder) {
+            switch ($folder) {
                 case "app":
                     $target = $this->newAppPath.($folder === "app" ? "" : DIRECTORY_SEPARATOR.$folder);
+
                     break;
                 case "database":
                     $target = $this->newAppPath.DIRECTORY_SEPARATOR.ucfirst($folder);
+
                     break;
                 default:
                     $target = $this->newAppPath.DIRECTORY_SEPARATOR.$folder;
             }
 
-            if(!!!$this->fileSystem->copyDirectory($folder, $target))
+            if (! ! ! $this->fileSystem->copyDirectory($folder, $target)) {
                 return false;
+            }
 
             if($folder === "database")
             {
@@ -63,10 +64,10 @@ class MoveFoldersAndFilesToTheNewAppFolder implements ReversableAction
 
     public function finish(): bool
     {
-        foreach ($this->folders as $folder)
-        {
-            if(!!!$this->fileSystem->deleteDirectory($folder))
+        foreach ($this->folders as $folder) {
+            if (! ! ! $this->fileSystem->deleteDirectory($folder)) {
                 return false;
+            }
         }
 
         return true;

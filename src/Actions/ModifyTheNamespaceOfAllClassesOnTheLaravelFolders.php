@@ -18,8 +18,7 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
 
     public function execute(): bool
     {
-        foreach ($this->folders as $folder)
-        {
+        foreach ($this->folders as $folder) {
             $this->fileSystem->copyDirectory($folder, "$folder.bak");
 
             foreach (
@@ -39,15 +38,13 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
                         $this->fileSystem->get($file), $count)
                 );
 
-                if(!!!$success)
-                {
+                if (! ! ! $success) {
                     $this->rollback();
 
                     return false;
                 }
 
-                if($count)
-                {
+                if ($count) {
                     $this->command->comment("    $file");
                 }
             }
@@ -60,13 +57,13 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
     {
         $errors = false;
 
-        foreach ($this->folders as $folder)
-        {
-            if(!!!$this->fileSystem->deleteDirectory("$folder.bak"))
+        foreach ($this->folders as $folder) {
+            if (! ! ! $this->fileSystem->deleteDirectory("$folder.bak")) {
                 $errors = true;
+            }
         }
 
-        return !!!$errors;
+        return ! ! ! $errors;
     }
 
     public function message(): string
@@ -78,12 +75,12 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
     {
         $errors = false;
 
-        foreach ($this->folders as $folder)
-        {
-            if(!!!$this->fileSystem->moveDirectory("$folder.bak", "$folder", true))
+        foreach ($this->folders as $folder) {
+            if (! ! ! $this->fileSystem->moveDirectory("$folder.bak", "$folder", true)) {
                 $errors = true;
+            }
         }
 
-        return !!!$errors;
+        return ! ! ! $errors;
     }
 }

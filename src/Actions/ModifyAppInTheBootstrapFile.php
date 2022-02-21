@@ -8,7 +8,7 @@ use ModularLaravel\Helpers\Names;
 
 class ModifyAppInTheBootstrapFile implements ReversableAction
 {
-    const BAK_FILENAME = "bootstrap".DIRECTORY_SEPARATOR."app.php.bak";
+    public const BAK_FILENAME = "bootstrap".DIRECTORY_SEPARATOR."app.php.bak";
 
     private Filesystem $fileSystem;
 
