@@ -8,19 +8,21 @@ class Names
 {
     public static function domain(): Stringable
     {
-        return self::name("modular-laravel.domainFolderName");
+        return self::config("modular-laravel.domainFolderName");
     }
 
     public static function app(): Stringable
     {
-        return self::name("modular-laravel.appFolderName");
+        return self::config("modular-laravel.appFolderName");
     }
 
-    /**
-     * @return Stringable
-     */
-    protected static function name(string $setting): Stringable
+    public static function config(string $setting): Stringable
     {
-        return str(config($setting))->camel()->ucfirst();
+        return self::name(config($setting));
+    }
+
+    public static function name(string $str): Stringable
+    {
+        return str($str)->camel()->ucfirst();
     }
 }

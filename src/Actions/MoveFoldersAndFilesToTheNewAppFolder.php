@@ -40,6 +40,22 @@ class MoveFoldersAndFilesToTheNewAppFolder implements ReversableAction
 
             if(!!!$this->fileSystem->copyDirectory($folder, $target))
                 return false;
+
+            if($folder === "database")
+            {
+                $slash = DIRECTORY_SEPARATOR;
+
+                foreach ($this->fileSystem->directories($target) as $directory)
+                {
+                    if (str_contains($directory, "migrations")) continue;
+
+                    $pathParts = explode($slash, $directory);
+                    $newDirectory = Names::name(array_pop($pathParts));
+                    $pathParts[] = $newDirectory;
+
+                    $this->fileSystem->move($directory, implode($slash, $pathParts));
+                }
+            }
         }
 
         return true;

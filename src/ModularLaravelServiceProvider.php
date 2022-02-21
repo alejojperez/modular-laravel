@@ -2,6 +2,9 @@
 
 namespace ModularLaravel;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use ModularLaravel\Commands\InstallCommand;
 use ModularLaravel\Commands\MakeAppCommand;
 use ModularLaravel\Commands\MakeDomainCommand;
@@ -24,4 +27,25 @@ class ModularLaravelServiceProvider extends PackageServiceProvider
             ->hasCommand(MakeAppCommand::class)
             ->hasCommand(MakeDomainCommand::class);
     }
+
+    public static function postInstallWiring(Application $application): void
+    {
+        self::registerDatabaseSeeder($application);
+
+        self::registerFactoryNamespace($application);
+    }
+
+    #region Post Install Wiring
+
+    protected static function registerDatabaseSeeder(Application $application): void
+    {
+        $application->bind("DatabaseSeeder", $application->getNamespace()."Database\Seeders\DatabaseSeeder");
+    }
+
+    protected static function registerFactoryNamespace(Application $application): void
+    {
+        Factory::useNamespace($application->getNamespace()."Database\\Factories\\");
+    }
+
+    #endregion
 }

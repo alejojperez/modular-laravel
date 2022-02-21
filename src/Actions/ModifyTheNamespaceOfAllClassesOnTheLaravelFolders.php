@@ -7,7 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 
 class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAction
 {
-    private $folders = ["app", "bootstrap", "config"];
+    private $folders = ["app", "database", "bootstrap", "config"];
 
     private Filesystem $fileSystem;
 
@@ -22,15 +22,21 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
         {
             $this->fileSystem->copyDirectory($folder, "$folder.bak");
 
-            foreach ($this->fileSystem->allFiles($folder) as $file)
+            foreach (
+                collect($this->fileSystem->allFiles($folder))
+                    ->filter(fn($f) => str_contains($f, ".php") && !!!str_contains($f, "cache"))
+                as
+                $file
+            )
             {
-                if(str_contains($file, "cache")) continue;
-
                 $count = 0;
 
                 $success = $this->fileSystem->put(
                     $file,
-                    str_replace("App\\", "App\\$this->name\\", $this->fileSystem->get($file), $count)
+                    str_replace(
+                        ["App\\",              "namespace Database\\",                   "use Database\\"],
+                        ["App\\$this->name\\", "namespace App\\$this->name\\Database\\", "use App\\$this->name\\Database\\"],
+                        $this->fileSystem->get($file), $count)
                 );
 
                 if(!!!$success)
@@ -65,7 +71,7 @@ class ModifyTheNamespaceOfAllClassesOnTheLaravelFolders implements ReversableAct
 
     public function message(): string
     {
-        return "Modifying the namesace of all the classes in the files within the app folder...";
+        return "Modifying the namesace of all the classes in the files within the laravel folders...";
     }
 
     public function rollback(): bool

@@ -5,6 +5,13 @@ namespace App;
 class Application extends \Illuminate\Foundation\Application
 {
     /**
+     * The application namespace.
+     *
+     * @var string
+     */
+    protected $namespace = "__APP_NAMESPACE__";
+
+    /**
      * The custom resources path defined by the developer.
      *
      * @var string

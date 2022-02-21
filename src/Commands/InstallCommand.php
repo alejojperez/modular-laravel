@@ -18,8 +18,8 @@ class InstallCommand extends Command
 
     public function handle(): int
     {
-//        if(!!!$this->confirm("Have you made a copy of the porject current stage before continuing (if somehting goes worng we can't revert it)?")) return self::SUCCESS;
-//
+        if(!!!$this->confirm("Have you made a copy of the porject current stage before continuing (if somehting goes worng we might not be able to revert it)?")) return self::SUCCESS;
+
         $actions = [
             new ModifyComposerAutoloadPSR4(),
             new ModifyTheNamespaceOfAllClassesOnTheLaravelFolders($this, $this->data()["name"]),
@@ -38,8 +38,9 @@ class InstallCommand extends Command
 
         $this->runActions($actions);
 
-        // change the app.php to override all the paths that we consider that need to be overwritten
-        // database: all subfolders in capital, migration|seeder commands from laravel to work
+        // TODO
+        // providers and console kernel bak files not geeting deleted
+        // test all the default artisan commands to work
         // edit phpunit.xml to refactor path to tests files
         // edit webpack.mix.js to refactor path to resources files
 
@@ -47,6 +48,7 @@ class InstallCommand extends Command
         //// save before do install
         //// setup config for app and domain
         //// not recommended for existing apps
+        //// explain that they need to register the DatabaseSeeder to the laravel container for the seeders to work: \ModularLaravel\ModularLaravelServiceProvider::postInstallWiring($this->app);
 
         shell_exec("composer dump-autoload");
 
