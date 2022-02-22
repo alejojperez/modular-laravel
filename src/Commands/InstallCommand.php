@@ -44,17 +44,6 @@ class InstallCommand extends Command
 
         $this->runActions($actions);
 
-        // TODO
-        // fix make:test command, location not correct
-        // create a command to pass through: make,migrate,model,notification,vendor
-
-        // update docs:
-        //// save before do install
-        //// setup config for app and domain
-        //// explain how the pass through command works
-        //// not recommended for existing apps
-        //// explain that they need to register the DatabaseSeeder to the laravel container for the seeders to work: \ModularLaravel\ModularLaravelServiceProvider::postInstallWiring($this->app);
-
         $this->comment("Running [composer dump-autoload] commnad...");
         shell_exec("composer dump-autoload");
 
