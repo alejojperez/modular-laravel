@@ -32,6 +32,19 @@ class Application extends \Illuminate\Foundation\Application
     }
 
     /**
+     * Set the application namesapce.
+     *
+     * @param  string  $namesapce
+     * @return $this
+     */
+    public function useNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+
+        return $this;
+    }
+
+    /**
      * Set the resources directory.
      *
      * @param  string  $path
