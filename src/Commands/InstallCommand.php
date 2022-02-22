@@ -7,6 +7,8 @@ use ModularLaravel\Actions\EditRoutesOnAnyFileWithinTheLaravelFolders;
 use ModularLaravel\Actions\ModifyAppInTheBootstrapFile;
 use ModularLaravel\Actions\ModifyComposerAutoloadPSR4;
 use ModularLaravel\Actions\ModifyTheNamespaceOfAllClassesOnTheLaravelFolders;
+use ModularLaravel\Actions\ModifyTheTestSuites;
+use ModularLaravel\Actions\ModifyTheWebpackMixPaths;
 use ModularLaravel\Actions\MoveFoldersAndFilesToTheNewAppFolder;
 use ModularLaravel\Actions\ReversableAction;
 
@@ -26,6 +28,8 @@ class InstallCommand extends Command
             new ModifyComposerAutoloadPSR4(),
             new ModifyTheNamespaceOfAllClassesOnTheLaravelFolders($this, $this->data()["name"]),
             new EditRoutesOnAnyFileWithinTheLaravelFolders($this, $this->data()["name"]),
+            new ModifyTheTestSuites($this->data()["name"]),
+            new ModifyTheWebpackMixPaths($this->data()["name"]),
 
             // IMPORTANT: The action ModifyAppInTheBootstrapFile must run after the action
             // IMPORTANT: ModifyTheNamespaceOfAllClassesOnTheLaravelFolders becasue it
@@ -41,13 +45,13 @@ class InstallCommand extends Command
         $this->runActions($actions);
 
         // TODO
-        // test all the default artisan commands to work
-        // edit phpunit.xml to refactor path to tests files
-        // edit webpack.mix.js to refactor path to resources files
+        // fix make:test command, location not correct
+        // create a command to pass through: make,migrate,model,notification,vendor
 
         // update docs:
         //// save before do install
         //// setup config for app and domain
+        //// explain how the pass through command works
         //// not recommended for existing apps
         //// explain that they need to register the DatabaseSeeder to the laravel container for the seeders to work: \ModularLaravel\ModularLaravelServiceProvider::postInstallWiring($this->app);
 

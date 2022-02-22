@@ -8,8 +8,6 @@ use ModularLaravel\Helpers\Names;
 
 class ModifyAppInTheBootstrapFile implements ReversableAction
 {
-    public const BAK_FILENAME = "bootstrap".DIRECTORY_SEPARATOR."app.php.bak";
-
     private Filesystem $fileSystem;
 
     private string $newAppFolderPath;
@@ -72,7 +70,7 @@ class ModifyAppInTheBootstrapFile implements ReversableAction
     public function rollback(): bool
     {
         return
-            $this->fileSystem->put("app.php", $this->fileSystem->get("bootstrap".DIRECTORY_SEPARATOR."app.php.bak"))
+            $this->fileSystem->put("bootstrap".DIRECTORY_SEPARATOR."app.php", $this->fileSystem->get("bootstrap".DIRECTORY_SEPARATOR."app.php.bak"))
             &&
             $this->fileSystem->delete("bootstrap".DIRECTORY_SEPARATOR."app.php.bak")
             &&
