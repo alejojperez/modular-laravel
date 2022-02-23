@@ -32,4 +32,14 @@ class MakeDomainCommand extends AbstractMakeModuleCommand
             "States",
         ];
     }
+
+    public function getFiles(): array
+    {
+        return [];
+    }
+
+    public function replaceFileContent(array $data, string $content): string
+    {
+        return $content;
+    }
 }

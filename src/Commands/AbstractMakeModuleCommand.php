@@ -26,7 +26,21 @@ abstract class AbstractMakeModuleCommand extends Command
 
     abstract public function getModuleType(): Stringable;
 
+    abstract public function getFiles(): array;
+
     abstract public function getFolders(): array;
+
+    abstract public function replaceFileContent(array $data, string $content): string;
+
+    public function resolveFolderFinalPath(array $data): string
+    {
+        return $data["name"].DIRECTORY_SEPARATOR;
+    }
+
+    public function resolveFileFinalPath(array $data): string
+    {
+        return $data["name"].DIRECTORY_SEPARATOR;
+    }
 
     public function handle(): int
     {
@@ -37,14 +51,23 @@ abstract class AbstractMakeModuleCommand extends Command
         $fileSystem = Storage::build($sourcePath.$slash.$moduleType);
 
         $data = $this->data();
-        $name = str($data["name"])->camel()->ucfirst();
+        $name = $data["name"];
 
         $fileSystem->makeDirectory($name);
 
         if (! ! ! $this->option("empty")) {
             foreach ($this->getFolders() as $folder) {
-                $path = $name.$slash.str_replace(".", $slash, $folder);
+                $folder = str_replace(".", $slash, $folder);
+                $path = $this->resolveFolderFinalPath($data).$folder;
                 $fileSystem->makeDirectory($path);
+            }
+
+            foreach ($this->getFiles() as $file) {
+                $file = str_replace(".", $slash, $file).".php";
+                $content = file_get_contents(__DIR__.$slash."..".$slash."stubs".$slash.$this->getModuleType().$slash.$file.".stub");
+                $content = $this->replaceFileContent($data, $content);
+                $path = $this->resolveFileFinalPath($data).$file;
+                $fileSystem->put($path, $content);
             }
         }
 
@@ -59,7 +82,7 @@ abstract class AbstractMakeModuleCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("name") ?? $this->askRequired("What is the name of the module?"),
+            "name" => str($this->argument("name") ?? $this->askRequired("What is the name of the module?"))->camel()->ucfirst(),
         ];
     }
 
