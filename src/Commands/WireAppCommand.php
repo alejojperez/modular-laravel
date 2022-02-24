@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 use ModularLaravel\Helpers\Names;
 use ModularLaravel\ModularLaravelServiceProvider;
 
-class WireCommand extends Command
+class WireAppCommand extends Command
 {
-    public $signature = 'modular-laravel:wire {appName} {arguments*}';
+    public $signature = 'modular-laravel:wire-app {appName} {subModule} {arguments*}';
 
     public $description = 'Change the app namespace to the one passed and execute the laravel command';
 
@@ -18,11 +18,11 @@ class WireCommand extends Command
         $appName = Names::app();
 
         $newApplication = app()
-            ->useNamespace("$appName\\".$this->argument("appName")."\\")
-            ->useLangPath("$srcName/$appName/{$this->argument("appName")}/lang")
-            ->useDatabasePath("$srcName/$appName/{$this->argument("appName")}/Database")
-            ->useResourcePath("$srcName/$appName/{$this->argument("appName")}/resources")
-            ->useAppPath("$srcName/$appName/{$this->argument("appName")}");
+            ->useNamespace("$appName\\{$this->argument("appName")}\\{$this->argument("subModule")}\\")
+            ->useLangPath("$srcName/$appName/{$this->argument("appName")}/{$this->argument("subModule")}/lang")
+            ->useDatabasePath("$srcName/$appName/{$this->argument("appName")}/{$this->argument("subModule")}/Database")
+            ->useResourcePath("$srcName/$appName/{$this->argument("appName")}/{$this->argument("subModule")}/resources")
+            ->useAppPath("$srcName/$appName/{$this->argument("appName")}/{$this->argument("subModule")}");
 
         ModularLaravelServiceProvider::postInstallWiring($newApplication);
 

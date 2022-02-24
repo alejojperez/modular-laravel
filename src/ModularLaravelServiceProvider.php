@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use ModularLaravel\Commands\InstallCommand;
 use ModularLaravel\Commands\MakeAppCommand;
 use ModularLaravel\Commands\MakeDomainCommand;
-use ModularLaravel\Commands\WireCommand;
+use ModularLaravel\Commands\WireAppCommand;
+use ModularLaravel\Commands\WireDomainCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -26,7 +27,8 @@ class ModularLaravelServiceProvider extends PackageServiceProvider
             ->hasCommand(InstallCommand::class)
             ->hasCommand(MakeAppCommand::class)
             ->hasCommand(MakeDomainCommand::class)
-            ->hasCommand(WireCommand::class);
+            ->hasCommand(WireAppCommand::class)
+            ->hasCommand(WireDomainCommand::class);
     }
 
     public static function postInstallWiring(Application $application): void
