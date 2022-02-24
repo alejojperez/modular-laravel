@@ -24,15 +24,22 @@ class MakeAppCommand extends AbstractMakeModuleCommand
         return [
             "Controllers",
             "Middlewares",
+            "Providers",
             "Requests",
             "Resources",
             "ViewModels",
+            "routes",
         ];
     }
 
     public function getFiles(): array
     {
-        return [ ];
+        return [
+            "AppServiceProvider",
+            "Providers.RouteServiceProvider",
+            "routes.api",
+            "routes.web",
+        ];
     }
 
     /**
@@ -55,7 +62,12 @@ class MakeAppCommand extends AbstractMakeModuleCommand
 
     public function replaceFileContent(array $data, string $content): string
     {
-        return str_replace("__MODULE_NAME__", $data["subModule"], $content);
+        $content = str_replace("__MODULE_NAME__", $data["name"], $content);
+        $content = str_replace("__MODULE_NAME_SLUG__", str($data["name"])->slug(), $content);
+        $content = str_replace("__SUBMODULE_NAME__", $data["subModule"], $content);
+        $content = str_replace("__SUBMODULE_NAME_SLUG__", str($data["subModule"])->slug(), $content);
+
+        return $content;
     }
 
     public function resolveFolderFinalPath(array $data): string

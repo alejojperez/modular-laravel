@@ -1,0 +1,30 @@
+<?php
+
+namespace App\RealEstate\Foreclosure;
+
+use App\__MODULE_NAME__\__SUBMODULE_NAME__\Providers\RouteServiceProvider;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+    }
+
+}
