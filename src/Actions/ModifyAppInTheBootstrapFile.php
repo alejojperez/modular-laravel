@@ -45,10 +45,10 @@ class ModifyAppInTheBootstrapFile implements ReversableAction
         $replacePaths =
             "// Adding the new app path\n".
             "\$app\n".
-            "    ->useLangPath('".$this->newAppFolderPath.$slash."lang')\n".
-            "    ->useDatabasePath('".$this->newAppFolderPath.$slash."Database')\n".
-            "    ->useResourcePath('".$this->newAppFolderPath.$slash."resources')\n".
-            "    ->useAppPath('".$this->newAppFolderPath."');\n".
+            "    ->useLangPath(__DIR__.'$slash'.'..'.'$slash'.'".$this->newAppFolderPath.$slash."lang')\n".
+            "    ->useDatabasePath(__DIR__.'$slash'.'..'.'$slash'.'".$this->newAppFolderPath.$slash."Database')\n".
+            "    ->useResourcePath(__DIR__.'$slash'.'..'.'$slash'.'".$this->newAppFolderPath.$slash."resources')\n".
+            "    ->useAppPath(__DIR__.'$slash'.'..'.'$slash'.'".$this->newAppFolderPath."');\n".
             "\n".
             "$1";
 
