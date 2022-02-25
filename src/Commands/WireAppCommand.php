@@ -8,7 +8,7 @@ use ModularLaravel\ModularLaravelServiceProvider;
 
 class WireAppCommand extends Command
 {
-    public $signature = 'modular-laravel:wire-app {appName} {subModule} {arguments*}';
+    public $signature = 'modular-laravel:wire:app {appName} {subModule} {arguments*}';
 
     public $description = 'Change the app namespace to the one passed and execute the laravel command';
 
@@ -32,6 +32,6 @@ class WireAppCommand extends Command
         $property = $reflector->getProperty("app");
         $property->setValue($console, $newApplication);
 
-        return $console->call(implode(" ", $this->argument("arguments")));
+        return $console->call(implode(" ", $this->argument("arguments")), [], $this->getOutput());
     }
 }
