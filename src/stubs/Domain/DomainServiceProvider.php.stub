@@ -4,7 +4,7 @@ namespace Domain\__DOMAIN_NAME__;
 
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class DomainServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
