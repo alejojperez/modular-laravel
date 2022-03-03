@@ -8,7 +8,7 @@ use ModularLaravel\ModularLaravelServiceProvider;
 
 class WireAppCommand extends Command
 {
-    public $signature = 'modular-laravel:wire:app {appName} {subModule} {arguments*}';
+    public $signature = 'wire:app {appName} {subModule} {arguments*}';
 
     public $description = 'Change the app namespace to the one passed and execute the laravel command';
 

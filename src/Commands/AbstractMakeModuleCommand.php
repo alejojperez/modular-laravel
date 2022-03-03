@@ -18,7 +18,7 @@ abstract class AbstractMakeModuleCommand extends Command
         parent::__construct();
     }
 
-    public $signature = 'modular-laravel:make:'.self::REPLACE.' {name?} {--empty}';
+    public $signature = 'make:'.self::REPLACE.' {name?} {--empty}';
 
     public $description = 'Create a new '.self::REPLACE.' scalfolding';
 

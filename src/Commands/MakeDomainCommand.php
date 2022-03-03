@@ -35,11 +35,15 @@ class MakeDomainCommand extends AbstractMakeModuleCommand
 
     public function getFiles(): array
     {
-        return [];
+        return [
+            "DomainServiceProvider"
+        ];
     }
 
     public function replaceFileContent(array $data, string $content): string
     {
+        $content = str_replace("__DOMAIN_NAME__", $data["name"], $content);
+
         return $content;
     }
 }

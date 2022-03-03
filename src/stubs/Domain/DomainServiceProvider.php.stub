@@ -1,8 +1,7 @@
 <?php
 
-namespace App\__MODULE_NAME__\__SUBMODULE_NAME__;
+namespace Domain\__DOMAIN_NAME__;
 
-use App\__MODULE_NAME__\__SUBMODULE_NAME__\Providers\RouteServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(RouteServiceProvider::class);
+        //
     }
 
     /**

@@ -7,7 +7,7 @@ use ModularLaravel\Helpers\Names;
 
 class MakeAppCommand extends AbstractMakeModuleCommand
 {
-    public $signature = 'modular-laravel:make:'.self::REPLACE.' {name?} {subModule?} {--empty}';
+    public $signature = 'make:'.self::REPLACE.' {name?} {subModule?} {--empty}';
 
     public function getCommandName(): string
     {

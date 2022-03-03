@@ -56,7 +56,7 @@ class InstallCommand extends Command
     protected function data(): array
     {
         return [
-            "name" => $this->argument("appName") ?? "Default",
+            "name" => $this->argument("appName") ?? "Laravel",
         ];
     }
 
